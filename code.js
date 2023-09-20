@@ -81,6 +81,7 @@ async function parseCurrentPage() {
     let retailer = getRetailer().toUpperCase();
   
     cards.forEach((card) => {
+      	let currentUrl = window.location.href;
         let cashBackElement = card.querySelector('.item-offer-card__text--cash-back');
         let offerNameElement = card.querySelector('.item-offer-card__text--offer-name');
         let offerDetailsElement = card.querySelector('.item-offer-card__text--subtext');
@@ -95,7 +96,7 @@ async function parseCurrentPage() {
     expiration: "NO EXPIRATION",
     insertDate: "DIGITAL",
     insertId: `IBOTTA-${retailer}`,
-    url: "https://ibotta.com",
+    url: currentUrl,
     categories: "Food",
     source: `IBOTTA-${retailer}`,
     couponId: Math.random().toString(36).substring(7)
@@ -108,7 +109,7 @@ async function parseCurrentPage() {
     expiration: "NO EXPIRATION",
     insertDate: "DIGITAL",
     insertId: "IBOTTA",
-    url: "https://ibotta.com",
+    url: currentUrl,
     categories: "Food",
     source: "IBOTTA",
     couponId: Math.random().toString(36).substring(7)

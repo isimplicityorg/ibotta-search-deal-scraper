@@ -16,15 +16,6 @@ async function parseCurrentPageAndCreateFile(fileName) {
   var message="File created and downloaded successfully! Check your downloads for " + fileName + " file!";
   
   let allParsedOffers = await clickNextButtonAndParse();
-  //let jsonString = JSON.stringify(allParsedOffers, null, 2);
-  //let blob = new Blob([jsonString], {
-  //  type: 'application/json'
-  //});
-  //let downloadLink = document.createElement('a');
-  //downloadLink.href = URL.createObjectURL(blob);
-  //downloadLink.download = fileName;
-  //downloadLink.click();
-  //URL.revokeObjectURL(downloadLink.href);
   //create and download the file
   createJSONFile(allParsedOffers, fileName)
   //create the modal popup in the DOM
@@ -59,34 +50,34 @@ async function parseCurrentPage() {
     let cashBackElement = card.querySelector('.item-offer-card__text--cash-back');
     let offerNameElement = card.querySelector('.item-offer-card__text--offer-name');
     let offerDetailsElement = card.querySelector('.item-offer-card__text--subtext');
-    let cashBack = cashBackElement ? cashBackElement.textContent.trim() : '';
-    let offerName = offerNameElement ? offerNameElement.textContent.trim() : '';
-    let offerDetails = offerDetailsElement ? offerDetailsElement.textContent.trim() : '';
+    let strCouponValue = cashBackElement ? cashBackElement.textContent.trim() : '';
+    let strName = offerNameElement ? offerNameElement.textContent.trim() : '';
+    let strDescription = offerDetailsElement ? offerDetailsElement.textContent.trim() : '';
     if (retailer !== "") {
       offers.push({
-        cashBack,
-        offerName,
-        offerDetails,
-        expiration: "NO EXPIRATION",
-        insertDate: "DIGITAL",
-        insertId: `IBOTTA-${retailer}`,
-        url: currentUrl,
-        categories: "Food",
-        source: `IBOTTA-${retailer}`,
-        couponId: createCouponId("cc-")
+        "name": strName + strDescription,
+        "couponValue": strCouponValue,
+        "expirationDate": "No Expiration",
+        "description": strDescription,
+        "dateOfInsert": "DIGITAL",
+        "insertId": `IBOTTA-${retailer}`,
+        "couponUrl": currentUrl,
+        "categories": "Food",
+        "dataSource": `IBOTTA-${retailer}`,
+        "couponId": createCouponId("cc-")
       });
     } else {
       offers.push({
-        cashBack,
-        offerName,
-        offerDetails,
-        expiration: "NO EXPIRATION",
-        insertDate: "DIGITAL",
-        insertId: "IBOTTA",
-        url: currentUrl,
-        categories: "Food",
-        source: "IBOTTA",
-        couponId: createCouponId("cc-")
+        "name": strName + strDescription,
+        "couponValue": strCouponValue,
+        "expirationDate": "No Expiration",
+        "description": strDescription,
+        "dateOfInsert": "DIGITAL",
+        "insertId": `IBOTTA-${retailer}`,
+        "couponUrl": currentUrl,
+        "categories": "Food",
+        "dataSource": "IBOTTA",
+        "couponId": createCouponId("cc-")
       });
     }
   });

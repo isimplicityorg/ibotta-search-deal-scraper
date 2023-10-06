@@ -1,6 +1,6 @@
 function getRetailer() {
   // Find the retailer name
-  let element = document.querySelector('.inline-flex.-mt-1.text-4xl.font-extrabold');
+  var element = document.querySelector('.inline-flex.-mt-1.text-4xl.font-extrabold');
   retailer = "";
   // Check if the element exists
   if (element) {
@@ -15,11 +15,11 @@ function getRetailer() {
 async function parseCurrentPageAndCreateFile(fileName) {
   var message="File created and downloaded successfully! Check your downloads for " + fileName + " file!";
   
-  let allParsedOffers = await clickNextButtonAndParse();
+  var allParsedOffers = await clickNextButtonAndParse();
   //create and download the file
   createJSONFile(allParsedOffers, fileName)
   //create the modal popup in the DOM
-  let modal = createModal(message);
+  var modal = createModal(message);
   //show modal
   modal.style.display = 'block';
   setTimeout(() => {
@@ -28,58 +28,51 @@ async function parseCurrentPageAndCreateFile(fileName) {
   // Change the timeout duration as needed
 }
 async function clickNextButtonAndParse() {
-  let nextButton = document.querySelector('a[aria-label="Next Page"]');
+  var nextButton = document.querySelector('a[aria-label="Next Page"]');
   if (nextButton && nextButton.getAttribute('aria-label') !== 'Next Page, already on last page') {
-    let currentPageOffers = await parseCurrentPage();
+    var currentPageOffers = await parseCurrentPage();
     nextButton.click();
     await new Promise((resolve) => setTimeout(resolve, 100));
-    let nextPageOffers = await clickNextButtonAndParse();
-    let allOffers = currentPageOffers.concat(nextPageOffers);
+    var nextPageOffers = await clickNextButtonAndParse();
+    var allOffers = currentPageOffers.concat(nextPageOffers);
     return allOffers;
   } else {
     return parseCurrentPage();
   }
 }
 async function parseCurrentPage() {
-  let cards = document.querySelectorAll('.item-offer-card');
-  let offers = [];
-  let retailer = getRetailer().toUpperCase();
-
+  var cards = document.querySelectorAll('.item-offer-card');
+  var offers = [];
+  var retailer = getRetailer().toUpperCase();
+var retailerText = "";
   cards.forEach((card) => {
-    let currentUrl = window.location.href;
-    let cashBackElement = card.querySelector('.item-offer-card__text--cash-back');
-    let offerNameElement = card.querySelector('.item-offer-card__text--offer-name');
-    let offerDetailsElement = card.querySelector('.item-offer-card__text--subtext');
-    let strCouponValue = cashBackElement ? cashBackElement.textContent.trim() : '';
-    let strName = offerNameElement ? offerNameElement.textContent.trim() : '';
-    let strDescription = offerDetailsElement ? offerDetailsElement.textContent.trim() : '';
+    var currentUrl = window.location.href;
+    var cashBackElement = card.querySelector('.item-offer-card__text--cash-back');
+    var offerNameElement = card.querySelector('.item-offer-card__text--offer-name');
+    var offerDetailsElement = card.querySelector('.item-offer-card__text--subtext');
+    var strCouponValue = cashBackElement ? cashBackElement.textContent.trim() : '';
+    var strName = offerNameElement ? offerNameElement.textContent.trim() : '';
+    var strDescription = offerDetailsElement ? offerDetailsElement.textContent.trim() : '';
+
     if (retailer !== "") {
-      offers.push({
-        "name": strName + strDescription,
-        "couponValue": strCouponValue,
-        "expirationDate": "No Expiration",
-        "description": strDescription,
-        "dateOfInsert": "DIGITAL",
-        "insertId": `IBOTTA-${retailer}`,
-        "couponUrl": currentUrl,
-        "categories": "Food",
-        "dataSource": `IBOTTA-${retailer}`,
-        "couponId": createCouponId("cc-")
-      });
+      retailerText = `IBOTTA-${retailer}`;
     } else {
-      offers.push({
-        "name": strName + strDescription,
-        "couponValue": strCouponValue,
-        "expirationDate": "No Expiration",
-        "description": strDescription,
-        "dateOfInsert": "DIGITAL",
-        "insertId": `IBOTTA-${retailer}`,
-        "couponUrl": currentUrl,
-        "categories": "Food",
-        "dataSource": "IBOTTA",
-        "couponId": createCouponId("cc-")
-      });
+      retailerText = "IBOTTA";
     }
+
+    var items = [
+      strName + " " + strDescription,
+      strCouponValue,
+      "No Expiration",
+      strDescription,
+      "DIGITAL",
+      retailerText,
+      currentUrl,
+      "Food",
+      retailerText,
+      createCouponId("cc-")
+    ];
+    offers.push(createDatabaseJson(items));
   });
   return offers;
 } // Call the parseCurrentPageAndCreateFile function to start parsing and file creation

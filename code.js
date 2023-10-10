@@ -46,7 +46,10 @@ async function parseCurrentPage() {
   var retailer = getRetailer().toUpperCase();
 var retailerText = "";
   cards.forEach((card) => {
-    var currentUrl = window.location.href;
+    //we are no longer using the current deal url. 
+    //we use our affiliate link instead
+    //If there is a way to do both we will do that in the future.
+    var currentUrl = "https://tinyurl.com/3tsvwmns";
     var cashBackElement = card.querySelector('.item-offer-card__text--cash-back');
     var offerNameElement = card.querySelector('.item-offer-card__text--offer-name');
     var offerDetailsElement = card.querySelector('.item-offer-card__text--subtext');

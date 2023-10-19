@@ -80,6 +80,3 @@ var retailerText = "";
   return offers;
 } // Call the parseCurrentPageAndCreateFile function to start parsing and file creation
 parseCurrentPageAndCreateFile("ibotta-offers.json");
-
-
-
